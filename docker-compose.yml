@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: grpc-db
+    image: postgres:latest
+    ports:
+      - 3306:5432
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+      POSTGRES_DB: db
+    volumes:
+      - ./postgresql/:/var/lib/postgresql/data
+    networks:
+      - grpc-golang
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DESIGN: dracula
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - grpc-golang
+
+networks:
+  grpc-golang:
+    external: true
